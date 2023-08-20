@@ -1,45 +1,27 @@
 ---
-import type { SiteMeta } from "@/types";
+import type { SiteMeta } from "@/data/siteMeta";
 import BaseHead from "@/components/BaseHead";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import ThemeProvider from "@/components/ThemeProvider";
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
 import SkipLink from "@/components/SkipLink";
-import siteMeta from "src/site-meta.config";
+import { siteConfig } from "@/site-config";
 
-export type Props = {
+interface Props {
 	meta: SiteMeta;
-};
+}
 
 const {
-	meta: { title, description, image },
-} = Astro.props as Props;
+	meta: { title, description = siteConfig.description, ogImage, articleDate },
+} = Astro.props;
 ---
 
-<html lang={siteMeta.lang}>
+<html lang={siteConfig.lang}>
 	<head>
-		<BaseHead title={title} description={description} image={image} />
-		<script define:vars={{ siteMeta }}>
-			const root = document.documentElement;
-			const colorThemeMetaTag = document.querySelector(
-				"meta[name='theme-color']"
-			);
-			const theme =
-				typeof localStorage !== "undefined"
-					? localStorage.getItem("theme")
-					: null;
-			if (
-				theme === "dark" ||
-				(!theme && window.matchMedia("(prefers-color-scheme: dark)").matches)
-			) {
-				root.classList.add("dark");
-				colorThemeMetaTag.setAttribute("content", siteMeta.themeColorDark);
-			} else {
-				root.classList.remove("dark");
-				colorThemeMetaTag.setAttribute("content", siteMeta.themeColorLight);
-			}
-		</script>
+		<BaseHead title={title} description={description} ogImage={ogImage} articleDate={articleDate} />
 	</head>
 	<body>
+		<ThemeProvider />
 		<SkipLink />
 		<Header />
 		<main id="main" class="flex-1">

@@ -1,25 +1,36 @@
 {
-	"compilerOptions": {
-		"baseUrl": ".",
-		"paths": {
-			"@/components/*": ["src/components/*.astro"],
-			"@/layouts/*": ["src/layouts/*.astro"],
-			"@/util": ["src/util.ts"],
-			"@/stores/*": ["src/stores/*"],
-			"@/types": ["src/types.ts"]
-		},
-		// Enable top-level await and other modern ESM features.
-		"target": "ESNext",
-		"module": "ESNext",
-		// Enable node-style module resolution, for things like npm package imports.
-		"moduleResolution": "node",
-		// Enable JSON imports.
-		"resolveJsonModule": true,
-		// Enable stricter transpilation for better output.
-		"isolatedModules": true,
-		// Astro will directly run your TypeScript code, no transpilation needed.
-		"noEmit": true,
-		// Add type definitions for our Vite runtime.
-		"types": ["@astrojs/image/client"]
-	}
+  "extends": "astro/tsconfigs/strictest",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "verbatimModuleSyntax": true,
+    "noImplicitAny": false,
+    "paths": {
+      "@/components/*": [
+        "src/components/*.astro"
+      ],
+      "@/layouts/*": [
+        "src/layouts/*.astro"
+      ],
+      "@/utils": [
+        "src/utils/index.ts"
+      ],
+      "@/stores/*": [
+        "src/stores/*"
+      ],
+      "@/data/*": [
+        "src/data/*"
+      ],
+      "@/site-config": [
+        "src/site.config.ts"
+      ]
+    },
+    "jsx": "react-jsx",
+    "jsxImportSource": "react"
+  },
+  "exclude": [
+    "node_modules",
+    "**/node_modules/*",
+    ".vscode",
+    "dist"
+  ]
 }

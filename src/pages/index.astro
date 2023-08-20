@@ -1,23 +1,41 @@
 ---
+import { getCollection } from "astro:content";
 import PageLayout from "@/layouts/Base";
-import BlogPostPreview from "@/components/BlogPostPreview";
+import PostPreview from "@/components/blog/PostPreview";
 import SocialList from "@/components/SocialList";
-import { sortMDByDate } from "@/util";
-import type { Post } from "@/types";
-import Technologies from "@/components/Technologies";
-import Practices from "@/components/Practices";
+import { sortMDByDate } from "@/utils";
+
+const MAX_POSTS = 10;
+const allPosts = await getCollection("post");
+const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS);
 
 const meta = {
 	title: "Damo's Blog",
 	description: "A software developer blog.",
 };
 
-const MAX_POSTS = 10;
-const allPosts = await Astro.glob<Post>("./posts/*.mdx");
-const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS);
+const cactusTech: Array<{ title: string; desc: string; }> = [
+	{
+		title: "Front-End",
+		desc: "JavaScript/TypeScript, React, React-Native, NextJS",
+	},
+	{
+		title: "Back-End",
+		desc: "Kotlin, Java, NodeJS",
+	},
+	{
+		title: "Devops",
+		desc: "Docker, Kubernetes, Terraform, GitHub Actions, GitLab CI",
+	},
+	{
+		title: "Cloud",
+		desc: "Amazon Web Services",
+	},
+];
+
 ---
 
-<PageLayout meta={meta}>
+<PageLayout meta={{ title: "Home" }}>
 	<section>
 		<h1 class="mb-6 title">Hi folks!</h1>
 		<p class="mb-4">
@@ -28,17 +46,27 @@ const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS);
 		<SocialList />
 	</section>
 	<section aria-label="Blog post list" class="mt-16">
-		<h2 class="mb-4 text-xl title">Posts</h2>
+		<h2 class="title mb-4 text-xl">Posts</h2>
 		<ul class="space-y-4 sm:space-y-2">
 			{
 				allPostsByDate.map((p) => (
-					<li class="flex flex-wrap items-center gap-x-2 [&_q]:w-full">
-						<BlogPostPreview post={p} as="h2" />
+					<li class="flex flex-col gap-x-2 sm:flex-row">
+						<PostPreview post={p} />
 					</li>
 				))
 			}
 		</ul>
 	</section>
-	<Technologies />
-	<Practices />
+	<section class="mt-16">
+		<h2 class="title mb-4 text-xl">Technologies</h2>
+		<ul class="space-y-4 sm:space-y-2">
+			{
+				cactusTech.map(({ title, desc }) => (
+					<li>
+						<p class="inline-block sm:mt-2">{title}: {desc}</p>
+					</li>
+				))
+			}
+		</ul>
+	</section>
 </PageLayout>

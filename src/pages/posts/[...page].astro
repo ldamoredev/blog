@@ -1,27 +1,29 @@
 ---
+import type { Page, GetStaticPaths } from "astro";
+import type { CollectionEntry } from "astro:content";
+import { getCollection } from "astro:content";
 import PageLayout from "@/layouts/Base";
-import BlogPostPreview from "@/components/BlogPostPreview";
+import PostPreview from "@/components/blog/PostPreview";
 import Pagination from "@/components/Paginator";
-import { getAllTags, sortMDByDate } from "src/util";
-import type { Post, Page, MDXInstance } from "@/types";
+import { getUniqueTags, sortMDByDate } from "@/utils";
 
-export async function getStaticPaths({ paginate }) {
-	const allPosts = await Astro.glob<Post>("./*.mdx");
+export const getStaticPaths = (async ({ paginate }) => {
+	const allPosts = await getCollection("post");
 	const allPostsByDate = sortMDByDate(allPosts);
-	const allTags = getAllTags(allPosts);
-	return paginate(allPostsByDate, { props: { allTags }, pageSize: 10 });
+	const uniqueTags = getUniqueTags(allPosts);
+	return paginate(allPostsByDate, { props: { uniqueTags }, pageSize: 10 });
+});
+
+interface Props {
+	page: Page<CollectionEntry<"post">>;
+	uniqueTags: string[];
 }
 
-export interface Props {
-	page: Page<MDXInstance<Post>>;
-	allTags: string[];
-}
-
-const { page, allTags } = Astro.props as Props;
+const { page, uniqueTags } = Astro.props;
 
 const meta = {
 	title: "Posts",
-	description: "A collection of posts by me for a starter Astro theme",
+	description: "A collection of posts by me for an Asto starter theme",
 };
 
 const paginationProps = {
@@ -41,14 +43,14 @@ const paginationProps = {
 ---
 
 <PageLayout meta={meta}>
-	<h1 class="mb-6 title">Posts</h1>
+	<h1 class="title mb-6">Posts</h1>
 	<div class="grid gap-y-16 sm:grid-cols-[3fr_1fr] sm:gap-x-8">
 		<section aria-label="Blog post list">
-			<ul class="text-left space-y-8">
+			<ul class="space-y-8 text-start">
 				{
 					page.data.map((p) => (
-						<li class="flex flex-wrap items-center gap-x-2 [&_q]:w-full">
-							<BlogPostPreview post={p} as="h2" withDesc />
+						<li class="flex flex-col flex-wrap gap-2 sm:flex-row [&_q]:basis-full">
+							<PostPreview post={p} as="h2" withDesc />
 						</li>
 					))
 				}
@@ -56,13 +58,13 @@ const paginationProps = {
 			<Pagination {...paginationProps} />
 		</section>
 		{
-			allTags.length && (
+			uniqueTags.length && (
 				<aside>
-					<h2 class="flex items-center mb-4 text-lg font-semibold">
+					<h2 class="mb-4 flex items-center text-lg font-semibold">
 						<svg
 							aria-hidden="true"
 							xmlns="http://www.w3.org/2000/svg"
-							class="w-6 h-6"
+							class="h-6 w-6"
 							viewBox="0 0 24 24"
 							stroke-width="1.5"
 							stroke="currentColor"
@@ -78,11 +80,11 @@ const paginationProps = {
 						Tags
 					</h2>
 					<ul class="flex flex-wrap gap-2 text-bgColor">
-						{allTags.map((tag) => (
+						{uniqueTags.map((tag) => (
 							<li>
 								<a
-									class="flex items-center justify-center p-1 rounded-lg bg-accent"
-									href={`/tags/${tag}`}
+									class="flex items-center justify-center rounded-lg bg-accent p-1"
+									href={`/tags/${tag}/`}
 									aria-label={`View all posts with the tag: ${tag}`}
 								>
 									{tag}
@@ -90,12 +92,8 @@ const paginationProps = {
 							</li>
 						))}
 					</ul>
-					<span class="block mt-4 sm:text-right">
-						<a
-							class="sm:hover:text-accent"
-							href="/tags"
-							aria-label="View all blog categories"
-						>
+					<span class="mt-4 block sm:text-end">
+						<a class="sm:hover:text-accent" href="/tags/" aria-label="View all blog categories">
 							View all →
 						</a>
 					</span>

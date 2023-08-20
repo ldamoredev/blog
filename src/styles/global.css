@@ -1,35 +1,33 @@
 @tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 @layer base {
 	:root {
 		color-scheme: light;
-		--theme-bg: 0 0% 98%;
-		--theme-link: 172 18.1% 41.2%;
-		--theme-text: 202 10.5% 14.9%;
-		--theme-accent: 351 65.9% 48.2%;
-		--theme-accent-2: 0 0% 6.7%;
-		--theme-quote: 351 65.9% 48.2%;
-		--theme-menu-bg: hsl(0 0% 98% / 0.85);
+		--theme-bg: 250 250 250;
+		--theme-link: 86 124 119;
+		--theme-text: 34 39 42;
+		--theme-accent: 204 42 66;
+		--theme-accent-2: 17 17 17;
+		--theme-quote: 204 42 66;
 	}
 
 	:root.dark {
 		color-scheme: dark;
-		--theme-bg: 210 6.5% 12.2%;
-		--theme-link: 330 49.4% 66.7%;
-		--theme-text: 220 2.9% 79.4%;
-		--theme-accent: 159 62.8% 45.3%;
-		--theme-accent-2: 0 0% 93.3%;
-		--theme-quote: 102 100% 85.7%;
-		--theme-menu-bg: hsl(210 6.5% 12.2% / 0.85);
+		--theme-bg: 29 31 33;
+		--theme-link: 212 128 170;
+		--theme-text: 201 202 204;
+		--theme-accent: 43 188 137;
+		--theme-accent-2: 238 238 238;
+		--theme-quote: 204 255 182;
 	}
 
 	html {
-		@apply h-full border-textColor scroll-smooth;
+		@apply h-full scroll-smooth border-t-2 border-textColor;
 	}
 
 	html body {
-		@apply h-full max-w-3xl mx-auto px-8 pt-16 font-mono font-normal antialiased text-sm flex flex-col text-textColor bg-bgColor;
-		max-width: 60rem;
+		@apply mx-auto flex h-full max-w-4xl flex-col bg-bgColor px-8 pt-16 font-mono text-sm font-normal text-textColor antialiased;
 	}
 }
-@tailwind components;
-@tailwind utilities;
