@@ -31,8 +31,8 @@ const url = new URL(Astro.request.url);
 			class="inline-flex items-center sm:relative sm:inline-block"
 			aria-current={url.pathname === "/" ? "page" : false}
 		>
-			<Image class="me-5 sm:absolute sm:start-[-4.5rem] sm:me-0 sm:h-16 sm:w-16" src={logoImg} alt="A covered up pug in the woods" />
-			<span class="text-xl font-bold sm:text-2xl">Damo's Blog</span>
+			<Image class="me-5 h-10 w-10 sm:absolute sm:start-[-4.5rem] sm:me-0 sm:h-16 sm:w-16" src={logoImg} alt="A covered up pug in the woods" />
+			<span class="text-xl font-bold title-span">Blog</span>
 		</a>
 		<nav
 			id="navigation-menu"
@@ -92,3 +92,10 @@ const url = new URL(Astro.request.url);
 	</button>
 </header>
 
+<style>
+	@media (max-width: 640px) {
+		.title-span {
+			display: none;
+		}
+	}
+</style>
