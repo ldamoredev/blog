@@ -9,7 +9,7 @@ tags: ["npm", "package"]
 
 Lo primero es inicializar nuestro proyecto y agregar las dependencias que necesitamos. En mi caso voy a estar usando la nueva version de [yarn](https://yarnpkg.com/).
 
-Para iniciar el proyecto usaremos los siguiente comandos:
+Para iniciar el proyecto usaremos los siguientes comandos:
 
 ```bash
 ldamore@Desktop:~ $ mkdir my-npm-package
@@ -19,9 +19,9 @@ ldamore@Desktop/my-npm-package:~ $ yarn init
 
 Y luego agregamos las dependencias que necesitamos. En mi caso voy a usar:
 
-- [builder bob](https://github.com/callstack/react-native-builder-bob): Herramienta que nos ayuda a bundlear nuestro codigo para distribucion
+- [builder bob](https://github.com/callstack/react-native-builder-bob): Herramienta que nos ayuda a bundlear nuestro código para distribución
 - [Typescript](https://www.typescriptlang.org/): Javascript con sintaxis de tipos.
-- [eslint](https://eslint.org/): Herramienta que nos ayuda analizar nuestro codigo y encontrar bugs.
+- [eslint](https://eslint.org/): Herramienta que nos ayuda analizar nuestro código y encontrar bugs.
 
 No es necesario que instales typescript y eslint, eso va a depender de como armes tu paquete.
 
@@ -33,9 +33,9 @@ ldamore@Desktop/my-npm-package:~ $ yarn add --dev @types/node @typescript-eslint
 
 ### Configurar Builder bob
 
-Una vez instalada las dependencias debemos configurar la herramienta Builder bob para que buildee nuestro codigo para produccion. Para eso debemos hacer algunos ajustes en el package.json
+Una vez instalada las dependencias debemos configurar la herramienta Builder bob para que buildee nuestro código para produccion. Para eso debemos hacer algunos ajustes en el package.json
 
-```json
+```
 {
   "name": "my-npm-package",
   "version": "0.1.o",
@@ -79,19 +79,19 @@ Una vez instalada las dependencias debemos configurar la herramienta Builder bob
 }
 ```
 
-Vamos paso por paso para explicar cada linea:
+Vamos paso por paso para explicar cada línea:
 
-- **“main”:** Indica el punto de entrada de nuestro paquete. Se suele poner el path al codigo buildeado con el sistema de modulos **commonjs (module.exports/require)**. Builder bob nos creara este codigo.
-- **“module”:** Indica el punto de entrada de nuestro paquete pero con el sistema de **module (exports/imports)**.  Builder bob nos creara este codigo.
-- **“types”:** Opcional. Si nuestro codigo esta en typescript indica el path a los tipos de nuestro paquetes. Builder bob nos proporcionara estos tipos.
-- **“files”:** Indica que archivos incluiremos en el paquete. La carpeta dist (creada una vez que buildeemos nuestro codigo con Builder bob) es obligatoria. Luego poderemos añadir opcionalmente src (recomendable para que quienes instalen el paquete tengan acceso al codigo fuente y no solo al codigo bundleado). Tambien se pueden añadir opcionalmente README.md y LICENSE o todos los archivos que querramos (se recomienda el minimo posible asi el paquete no pesa tanto)
-- **“scripts”:** Dentro de script agregaremos el comando `“build": "bob build"` para poder luego ejecutarlo y asi bob buildeara nuestro codigo para distribucion.
-- “**react-native-builder-bob**”: Aqui es donde configuraremos a builder bob para que buildee nuestro codigo. En mi caso le especifico que tome el codigo de la carpeta **src** y que el output sea en la carpeta **dist.** Ademas le especificamos los 3 targets posibles: **commonjs, module & typescript.** Si usted no usa typescript, no es necesario especificarlo.
-- “**publishConfig**”: Indica a que registry vamos a subir el paquete, en nuestro caso sera el registry oficial de npm
+- **“main”:** Indica el punto de entrada de nuestro paquete. Se suele poner el path al código buildeado con el sistema de modulos **commonjs (module.exports/require)**. Builder bob nos creará este código.
+- **“module”:** Indica el punto de entrada de nuestro paquete, pero con el sistema de **module (exports/imports)**.  Builder bob nos creará este código.
+- **“types”:** Opcional. Si nuestro código está en typescript indica el path a los tipos de nuestro paquetes. Builder bob nos proporcionará estos tipos.
+- **“files”:** Indica que archivos incluiremos en el paquete. La carpeta dist (creada una vez que buildeemos nuestro código con Builder bob) es obligatoria. Luego podremos añadir opcionalmente src (recomendable para que quienes instalen el paquete tengan acceso al código fuente y no solo al código bundleado). También se pueden añadir opcionalmente README.md y LICENSE o todos los archivos que querramos (se recomienda el minimo posible asi el paquete no pesa tanto)
+- **“scripts”:** Dentro de script agregaremos el comando `“build": "bob build"` para poder luego ejecutarlo y asi bob buildeara nuestro código para distribución.
+- “**react-native-builder-bob**”: Aquí es donde configuraremos a builder bob para que buildee nuestro código. En mi caso le especifico que tome el código de la carpeta **src** y que el output sea en la carpeta **dist.** Ademas le especificamos los 3 targets posibles: **commonjs, module & typescript.** Si usted no usa typescript, no es necesario especificarlo.
+- “**publishConfig**”: Indica a que registry vamos a subir el paquete, en nuestro caso será el registry oficial de npm
 
 ### Configuracion de Typescript y eslint (opcional)
 
-Este paso es para quienes tienen su proyecto en Typescript y usan eslint. A continuacion mostrare la configuracion que yo utilizo en el proyecto
+Este paso es para quienes tienen su proyecto en Typescript y usan eslint. A continuación mostraré la configuración que yo utilizo en el proyecto
 
 tsconfig.json:
 
@@ -167,45 +167,45 @@ module.exports = {
 
 ### Codear
 
-Por ultimo nos queda codear la funcionalidad de nuestro paquete. Ya que esto es un post que explica como subir un paquete a npm, la funcionalidad sera muy basica porque no pretende hacer incapie en eso. Es simplemente para testear la subida del paquete.
+Por ultimo nos queda codear la funcionalidad de nuestro paquete. Ya que esto es un post que explica como subir un paquete a npm, la funcionalidad será muy básica porque no pretende hacer hincapié en eso. Es simplemente para testear la subida del paquete.
 
-Por eso el siguiente paso sera crear la carpeta **src** (carpeta donde le indicamos a bob que estara nuestro codigo) y crear un archivo **index.ts** (o **index.js** si no utilizan typescript) con alguna funcionalidad adentro.
+Por eso el siguiente paso será crear la carpeta **src** (carpeta donde le indicamos a bob que estará nuestro código) y crear un archivo **index.ts** (o **index.js** si no utilizan typescript) con alguna funcionalidad adentro.
 
 **src/index.ts**
 
 ```tsx
-export const sum = (a: number, b: number) => return a + b
+export const sum = (a: number, b: number) => a + b
 ```
 
 ### Buildear & Publicar
 
-Lo ultimo que nos queda es buildear y publicar nuestro paquete. Para buildear debemos correr el comando ya creado **build:**
+Lo último que nos queda es buildear y publicar nuestro paquete. Para buildear debemos correr el comando ya creado **build:**
 
 ```bash
 ldamore@Desktop/my-npm-package:~ $ yarn build
 ```
 
-Eso nos creara una carpeta dist con los **targets** especificados previamente:
+Eso nos creará una carpeta dist con los **targets** especificados previamente:
 
-![0](0.png)
+![0](./0.png)
 
-Por ultimo para publicar nuestro paquete debemos crear en la raiz de nuestro proyecto un archivo llamado **.yarnrc.yml** con el siguiente contenido:
+Por ultimo para publicar nuestro paquete debemos crear en la raíz de nuestro proyecto un archivo llamado **.yarnrc.yml** con el siguiente contenido:
 
 ```yaml
 npmAuthToken: npm_your-npm-token
 ```
 
-Este archivo indicara las credenciales de nuestra cuenta npm para poder hacer login y publicar nuestro paquete.
+Este archivo indicará las credenciales de nuestra cuenta npm para poder hacer login y publicar nuestro paquete.
 
-Es requerido antes tener una cuenta en npm e ir a la seccion de access token y generar un nuevo token para poder publicar.
+Es requerido antes tener una cuenta en npm e ir a la sección de access token y generar un nuevo token para poder publicar.
 
-![1](1.png)
+![1](./1.png)
 
-### Configurar Github Actions (opcional)
+### Configurar GitHub Actions (opcional)
 
-Para poder hacer el proceso de publicacion mas automatico podemos utilizar github actions (o cualquier otro ci) para automatizar estas tareas.
+Para poder hacer el proceso de publicación más automático podemos utilizar github actions (o cualquier otro ci) para automatizar estas tareas.
 
-Para eso crearemos las siguientes carpetas y archivo en la raiz.
+Para eso crearemos las siguientes carpetas y archivo en la raíz.
 
 .github/workflows/main.yml
 
@@ -252,4 +252,4 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 ```
 
-Este workflow indica que antes un push se lintea el paquete y ante un tag con la regex release- se hace una publicacion. Es importante configurar en los secretos del repo el **NPM_TOKEN**
+Este workflow indica que antes un push corrobora que el código esté bien y ante un tag con la regex release- se hace una publicación. Es importante configurar en los secretos del repo el **NPM_TOKEN**
