@@ -206,6 +206,20 @@ declare module 'astro:content' {
   collection: "post";
   data: InferEntrySchema<"post">
 } & { render(): Render[".mdx"] };
+"aws-eks-fargate-with-terraform-2/index.mdx": {
+	id: "aws-eks-fargate-with-terraform-2/index.mdx";
+  slug: "aws-eks-fargate-with-terraform-2";
+  body: string;
+  collection: "post";
+  data: InferEntrySchema<"post">
+} & { render(): Render[".mdx"] };
+"aws-eks-fargate-with-terraform-3/index.mdx": {
+	id: "aws-eks-fargate-with-terraform-3/index.mdx";
+  slug: "aws-eks-fargate-with-terraform-3";
+  body: string;
+  collection: "post";
+  data: InferEntrySchema<"post">
+} & { render(): Render[".mdx"] };
 "aws-s3-static-hosting/index.mdx": {
 	id: "aws-s3-static-hosting/index.mdx";
   slug: "aws-s3-static-hosting";
@@ -213,9 +227,37 @@ declare module 'astro:content' {
   collection: "post";
   data: InferEntrySchema<"post">
 } & { render(): Render[".mdx"] };
-"hello-world/index.mdx": {
-	id: "hello-world/index.mdx";
-  slug: "hello-world";
+"deploy-docker-compose-traefik-aws-ec2/index.mdx": {
+	id: "deploy-docker-compose-traefik-aws-ec2/index.mdx";
+  slug: "deploy-docker-compose-traefik-aws-ec2";
+  body: string;
+  collection: "post";
+  data: InferEntrySchema<"post">
+} & { render(): Render[".mdx"] };
+"deploy-hashicorp-vault-to-aws-ec2-instance/index.mdx": {
+	id: "deploy-hashicorp-vault-to-aws-ec2-instance/index.mdx";
+  slug: "deploy-hashicorp-vault-to-aws-ec2-instance";
+  body: string;
+  collection: "post";
+  data: InferEntrySchema<"post">
+} & { render(): Render[".mdx"] };
+"deploy-kotlin-api-to-azure-container-apps/index.mdx": {
+	id: "deploy-kotlin-api-to-azure-container-apps/index.mdx";
+  slug: "deploy-kotlin-api-to-azure-container-apps";
+  body: string;
+  collection: "post";
+  data: InferEntrySchema<"post">
+} & { render(): Render[".mdx"] };
+"kong-api-gateway-for-development-environment/index.mdx": {
+	id: "kong-api-gateway-for-development-environment/index.mdx";
+  slug: "kong-api-gateway-for-development-environment";
+  body: string;
+  collection: "post";
+  data: InferEntrySchema<"post">
+} & { render(): Render[".mdx"] };
+"publish-npm-package/index.mdx": {
+	id: "publish-npm-package/index.mdx";
+  slug: "publish-npm-package";
   body: string;
   collection: "post";
   data: InferEntrySchema<"post">
