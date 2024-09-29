@@ -1,0 +1,344 @@
+---
+title: "Feature Flags"
+publishDate: "19 Nov 2023"
+description: "En este post explicaremos como integrar Amazon Cognito con Google Sign in en una aplicacion propia desarrollada con NextJS"
+tags: ["devops"]
+---
+
+No Hosted UI, no client-side authentication with AWS Amplify, just your no-BS guide in implementing a Google Sign-In on the server using Amazon Cognito & Next.js. If you want to skip the hassle of reading the overwhelming documentation of Amazon Cognito then this guide is for you.
+
+### Overview
+Ever wondered how Google Sign In works under the hood? OAuth 2.0, OpenID Connect, you might have come across these terms while trying to setup your application’s social sign in. Before we dive in, here’s a simplified breakdown to help you understand the process:
+
+### 1. User Authentication and Consent:
+The client application initiates Google Sign-In redirecting the user to Google’s authorization server.
+The user authenticates and grants permission to client application to access their Google account.
+### 2. Google Authorization Server:
+Google’s authorization server issues an authorization code to the client after successful authentication and consent.
+### 3. Exchange Authorization Code with Cognito:
+The client takes the authorization code and exchanges it with Amazon Cognito’s authorization server (token endpoint) to obtain Cognito-specific tokens.
+### 4. Cognito as OAuth 2.0 Provider:
+Amazon Cognito validates the authorization code from Google and issues its own tokens, including an ID token and an access token.
+### 5. Access Cognito-Protected Resources:
+The client can then use the obtained tokens to access Cognito-protected resources, such as AWS services or APIs.
+If the quick overview didn’t help much, the only thing to do left is get our hands dirty.
+
+### Setup
+Before implementing a Google Sign In in your project, we must set up the necessary prerequisites. The following subsections will guide you in creating your Amazon Cognito User Pool, registering your application with Google, and integrating them by adding Google as a social identity provider with the User Pool you will create.
+
+If you have already done these steps, then you can skip the following sections and proceed to the Google Sign In part.
+
+### Creating your Amazon Cognito User Pool
+1. In your Amazon Cognito Console, choose Create user pool.
+
+![img0](./0.png)
+
+2. In Configure sign-in experience, choose the Federated identity providers.
+
+![img0](./1.png)
+
+3. At Cognito user pool sign-in options, you can select Email as the minimum. Then select Google at Federated sign-in options.
+
+![img0](./2.png)
+
+4. In Configure security requirements, you can leave Cognito defaults checked for the Password policy.
+
+5. For testing purposes, choose No MFA for Multi-factor authentication.
+
+![img0](./3.png)
+
+6. Leave the User account recovery as it is.
+
+7. In Configure sign-up experience section, keep the settings unchanged.
+
+8. In Configure message delivery, choose Send email with Cognito for Email.
+
+9. Skip Connect federated identity providers for now.
+
+![img0](./3-5.png)
+
+10. In Integrate your app, enter your desired User pool name and Cognito domain name.
+
+![img0](./4png)
+
+![img0](./5png)
+
+11. Choose Confidential client in Initial app client, and enter a friendly App client name. Make sure Generate a client secret is selected.
+
+![img0](./6png)
+
+12. Enter http://localhost:3000/api/auth/callback as your URL in Allowed callback URLs. Leave the rest of the settings unchanged.
+
+![img0](./7png)
+
+13. Proceed to Review and create section and create your user pool.
+
+![img0](./10png)
+
+![img0](./11png)
+
+### Register your application with Google
+1. Go and sign in to the Google Cloud Platform Console.
+
+2. Choose Select a project from the top navigation bar and select NEW PROJECT.
+
+![img0](./12png)
+
+![img0](./13png)
+
+4. On the left navigation bar, choose APIs and Services, then OAuth consent screen. Make sure your project is selected.
+
+![img0](./15png)
+
+![img0](./16png)
+
+5. Choose External in User Type and choose CREATE.
+
+![img0](./17png)
+
+6. Enter your desired App information, App Logo, and App Domain details (leave empty the domains).
+
+![img0](./18png)
+
+![img0](./19png)
+
+7. In authorized domains, enter amazoncognito.com. Input your desired email address for Developer contact information. Then choose SAVE AND CONTINUE.
+
+8. In Scopes, choose ADD OR REMOVE SCOPES.
+
+9. Choose the following minimum OAuth scopes: …/auth/userinfo.email, …/auth/userinfo.profile, and openid.
+
+![img0](./21png)
+
+10. Choose UPDATE and then proceed to SAVE AND CONTINUE.
+
+![img0](./22png)
+
+11. In Test users, choose ADD USERS and enter the email addresses of your desired authorized test users. Choose SAVE AND CONTINUE.
+
+![img0](./23png)
+
+12. On the left navigation bar, choose APIs and Services, then Credentials.
+
+![img0](./24png)
+
+13. Choose CREATE CREDENTIALS then OAuth client ID.
+
+![img0](./25png)
+
+14. Choose the Web application for Application type and enter your desired client name. Under Authorized Javascript origins, add the following URIs:
+
+- https://<your-user-pool-domain>
+- http://localhost
+- http://localhost:3000
+
+You can find your user pool domain in the App integration tab of your Cognito console. Ex: https://<name>.auth.<region>.amazoncognito.com
+
+![img0](./26png)
+
+![img0](./27png)
+
+![img0](./28png)
+
+15. Under Authorized redirect URIs, choose ADD URI and enter https://<your-user-pool-domain>/oauth2/idpresponse. Choose CREATE.
+
+![img0](./29png)
+
+16. Securely store your client ID and client secret as you will need it in the next section.
+
+![img0](./30png)
+
+### Adding Google as social Identity Provider to your Cognito User Pool
+1. In your Amazon Cognito console, navigate to the user pool we have created earlier. Choose the Sign-in experience tab.
+
+![img0](./31png)
+
+2. Under the Federated identity provider sign-in, choose Add identity provider. Choose Google
+
+![img0](./32png)
+
+3. Add the client ID and client secret generated in the previous section. Under Authorized scopes, enter “profile email openid”. Note that the scopes should be separated with spaces.
+
+![img0](./33png)
+
+4. Under Map attributes between Google and your user pool, choose email for your Google attribute. Then, choose Add identity provider.
+
+![img0](./34png)
+
+5. Navigate to the App integration tab. At the bottom of the page, under App client list, choose your app client.
+
+![img0](./35png)
+
+6. Locate the Hosted UI and choose Edit.
+
+![img0](./36png)
+
+7. Under Identity Providers, choose Select identity providers and select Google.
+
+![img0](./37png)
+
+8. In OpenID Connect scopes, make sure that Email, OpenID, and Profile are selected. Then choose Save changes.
+
+![img0](./38png)
+
+## Signing In With Google
+### Environment Variables
+
+To implement a Google Sign In, we must first set the environment variables we will need in our project.
+
+Cognito Domain: Located in the App integration tab of your Cognito console. Ex: https://<name>.auth.<region>.amazoncognito.com
+App Client ID: At the bottom of the App integration page, choose your app client from the App client list. Locate your Client ID in the App client information section.
+App Client secret: If you have found your Client ID, the Client secret should just be directly below it.
+
+![img0](./39png)
+
+
+### Create NextJS
+This step is optional but if you dont have a NextJS app create it with this config.
+
+![img0](./40png)
+
+Your .env.local file should look like this:
+
+```dotenv
+// .env.local
+
+COGNITO_DOMAIN=<your-cognito-domain>
+COGNITO_APP_CLIENT_ID=<your-app-client-id>
+COGNITO_APP_CLIENT_SECRET=<your-app-client-secret>
+```
+
+### Authorize Endpoint
+The GET /oauth2/authorize endpoint is a redirection point that will redirect your user to the Google Sign In page. You will need to call this API route in the client.
+
+We must create our GET request to the /oauth2/authorize endpoint with the parameters: response_type, client_id, redirect_uri, state, identity_provider, and scope. The most important parameter here is the identity_provider as the inclusion of this will redirect your user to your identity provider’s sign-in page and not the Hosted UI. Visit the Authorize endpoint reference for more information.
+
+![img0](./42png)
+
+```ts
+// app/api/auth/google-sign-in/route.ts
+
+import { NextRequest, NextResponse } from 'next/server'
+
+const {
+    COGNITO_DOMAIN,
+    COGNITO_APP_CLIENT_ID
+} = process.env
+
+export async function GET(request: NextRequest) {
+    let authorizeParams = new URLSearchParams()
+    const origin = request.nextUrl.origin
+
+    authorizeParams.append('response_type', 'code')
+    authorizeParams.append('client_id', COGNITO_APP_CLIENT_ID as string)
+    authorizeParams.append('redirect_uri', `${origin}/api/auth/callback`)
+    authorizeParams.append('scope', 'email')
+
+    console.log(`${COGNITO_DOMAIN}/oauth2/authorize?${authorizeParams.toString()}`)
+
+    return NextResponse.redirect(`${COGNITO_DOMAIN}/oauth2/authorize?${authorizeParams.toString()}`)
+}
+```
+
+To call your API route on the client, we can make a GET request using the form tag. Your front-end code could be as simple as this:
+
+![img0](./43png)
+
+```tsx
+
+export default function Page() {
+    return (
+        <div className="min-h-screen bg-gray-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+            <form
+                className="max-w-md w-full space-y-8 p-6 bg-white shadow rounded-md"
+                action="/api/auth/google-sign-in"
+                method="GET"
+            >
+                <div className="text-center">
+                    <h2 className="mt-6 text-3xl font-bold text-gray-900">Sign In</h2>
+                    <p className="mt-2 text-sm text-gray-600">Please sign in with your Google account.</p>
+                </div>
+                <div className="mt-8 space-y-6">
+                    <button
+                        className="w-full py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50"
+                        type="submit"
+                    >
+                        Sign In With Google
+                    </button>
+                </div>
+            </form>
+        </div>
+    )
+}
+```
+
+### Token Endpoint
+After your user signs in with their chosen account, your callback function will receive an authorization code in the search params which you will use for the next step: making a POST request to the /oauth2/token endpoint. For more details about the token endpoint, visit the Token endpoint reference.
+
+![img0](./45png)
+
+```ts
+import { NextResponse, type NextRequest } from 'next/server'
+import { cookies } from 'next/headers'
+
+const {
+    COGNITO_DOMAIN,
+    COGNITO_APP_CLIENT_ID,
+    COGNITO_APP_CLIENT_SECRET
+} = process.env
+
+export async function GET(request: NextRequest) {
+    try {
+        const origin = request.nextUrl.origin
+        const searchParams = request.nextUrl.searchParams
+        const code = searchParams.get('code') as string
+
+        if (!code) {
+            const error = searchParams.get('error')
+            return NextResponse.json({ error: error || 'Unknown error' })
+        }
+
+        const authorizationHeader = `Basic ${Buffer.from(`${COGNITO_APP_CLIENT_ID}:${COGNITO_APP_CLIENT_SECRET}`).toString('base64')}`
+
+        const requestBody = new URLSearchParams({
+            grant_type: 'authorization_code',
+            client_id: COGNITO_APP_CLIENT_ID as string,
+            code: code,
+            redirect_uri: `${origin}/api/auth/callback`
+        })
+
+        // Get tokens
+        const res = await fetch(`${COGNITO_DOMAIN}/oauth2/token`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': authorizationHeader
+            },
+            body: requestBody
+        })
+
+        const data = await res.json()
+
+        if (!res.ok) {
+            return NextResponse.json({
+                error: data.error,
+                error_description: data.error_description
+            })
+        }
+
+        const cookieStore = cookies()
+        cookieStore.set('id_token', data.id_token)
+        cookieStore.set('access_token', data.access_token)
+        cookieStore.set('refresh_token', data.refresh_token)
+
+        return NextResponse.redirect(new URL('/', request.nextUrl))
+    } catch (error) {
+        return NextResponse.json({ error: error })
+    }
+}
+```
+
+A successful request to the token endpoint yields ID, access, and refresh tokens. The presence of the access token signifies the signed-in state of your user. You should also be redirected back to your home page and to further check if your request was successful, go to your browser’s developer tools and select the storage tab to check your cookies. You will see your access_token, id_token, and refresh_token cookies with their corresponding values.
+
+
+![img0](./46png)
