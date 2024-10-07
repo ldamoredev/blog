@@ -59,49 +59,49 @@ Si ya has hecho estos pasos, puedes saltarte las siguientes secciones y proceder
 
 10. En Integrar tu aplicación, ingresa el nombre deseado para el pool de usuarios y el nombre del dominio de Cognito.
 
-![img0](./4png)
+![img0](./4.png)
 
-![img0](./5png)
+![img0](./5.png)
 
 11. Elige Cliente confidencial en Cliente de aplicación inicial, e ingresa un nombre amigable para el cliente de la aplicación. Asegúrate de que la opción Generar un secreto de cliente esté seleccionada.
 
-![img0](./6png)
+![img0](./6.png)
 
 12.Ingresa http://localhost:3000/api/auth/callback como tu URL en las URLs de retorno permitidas. Deja el resto de la configuración sin cambios.
 
 
-![img0](./7png)
+![img0](./7.png)
 
 13. Procede a la sección Revisar y crear y crea tu pool de usuarios
 
-![img0](./10png)
+![img0](./10.png)
 
-![img0](./11png)
+![img0](./11.png)
 
 ### Registra tu aplicación con Google
 1. Ve e inicia sesión en la consola de Google Cloud Platform..
 
 2. Elige Seleccionar un proyecto en la barra de navegación superior y selecciona NUEVO PROYECTO.
 
-![img0](./12png)
+![img0](./12.png)
 
-![img0](./13png)
+![img0](./13.png)
 
 3. En la barra de navegación izquierda, elige APIs y Servicios, luego Pantalla de consentimiento de OAuth. Asegúrate de que tu proyecto esté seleccionado.
 
-![img0](./15png)
+![img0](./15.png)
 
-![img0](./16png)
+![img0](./16.png)
 
 4. Elige Externo en Tipo de usuario y elige CREAR.
 
-![img0](./17png)
+![img0](./17.png)
 
 5. Ingresa la información deseada para la aplicación, el logotipo de la aplicación y los detalles del dominio de la aplicación (deja los dominios vacíos).
 
-![img0](./18png)
+![img0](./18.png)
 
-![img0](./19png)
+![img0](./19.png)
 
 6. En dominios autorizados, ingresa amazoncognito.com. Introduce tu dirección de correo electrónico deseada para la información de contacto del desarrollador. Luego elige GUARDAR Y CONTINUAR.
 
@@ -109,23 +109,23 @@ Si ya has hecho estos pasos, puedes saltarte las siguientes secciones y proceder
 
 8. Elige los siguientes alcances mínimos de OAuth: …/auth/userinfo.email, …/auth/userinfo.profile y openid.
 
-![img0](./21png)
+![img0](./21.png)
 
 9. Elige ACTUALIZAR y luego procede a GUARDAR Y CONTINUAR.
 
-![img0](./22png)
+![img0](./22.png)
 
 10. En Usuarios de prueba, elige AÑADIR USUARIOS e ingresa las direcciones de correo electrónico de tus usuarios de prueba autorizados deseados. Elige GUARDAR Y CONTINUAR.
 
-![img0](./23png)
+![img0](./23.png)
 
 11. En la barra de navegación izquierda, elige APIs y Servicios, luego Credenciales.
 
-![img0](./24png)
+![img0](./24.png)
 
 12. Elige CREAR CREDENCIALES, luego ID de cliente OAuth.
 
-![img0](./25png)
+![img0](./25.png)
 
 13. Elige Aplicación web para el tipo de aplicación e ingresa tu nombre de cliente deseado. Bajo orígenes de JavaScript autorizados, añade las siguientes URI:
 
@@ -135,52 +135,52 @@ Si ya has hecho estos pasos, puedes saltarte las siguientes secciones y proceder
 
 14. Puedes encontrar tu dominio del pool de usuarios en la pestaña de integración de aplicaciones de tu consola de Cognito. Ejemplo: https://nombre.auth.región.amazoncognito.com
 
-![img0](./26png)
+![img0](./26.png)
 
-![img0](./27png)
+![img0](./27.png)
 
-![img0](./28png)
+![img0](./28.png)
 
 15. Bajo URIs de redirección autorizadas, elige AÑADIR URI e ingresa https://tu-dominio-del-pool-de-usuarios/oauth2/idpresponse. Elige CREAR.
 
-![img0](./29png)
+![img0](./29.png)
 
 16. Almacena de manera segura tu ID de cliente y secreto de cliente, ya que los necesitarás en la siguiente sección.
 
-![img0](./30png)
+![img0](./30.png)
 
 ### Agregar Google como proveedor de identidad social a tu pool de usuarios de Cognito
 1. En tu consola de Amazon Cognito, navega al pool de usuarios que creamos anteriormente. Elige la pestaña Experiencia de inicio de sesión.
 
-![img0](./31png)
+![img0](./31.png)
 
 2. Bajo Inicio de sesión de proveedores de identidad federada, elige Agregar proveedor de identidad. Elige Google.
 
-![img0](./32png)
+![img0](./32.png)
 
 3. Agrega el ID de cliente y el secreto de cliente generados en la sección anterior. Bajo Alcances autorizados, ingresa “perfil correo electrónico openid”. Ten en cuenta que los alcances deben estar separados por espacios.
 
-![img0](./33png)
+![img0](./33.png)
 
 4. Bajo Mapear atributos entre Google y tu pool de usuarios, elige correo electrónico para tu atributo de Google. Luego, elige Agregar proveedor de identidad.
 
-![img0](./34png)
+![img0](./34.png)
 
 5. Navega a la pestaña de Integración de aplicaciones. Al final de la página, bajo la lista de clientes de la aplicación, elige tu cliente de aplicación.
 
-![img0](./35png)
+![img0](./35.png)
 
 6. Localiza el Hosted UI y elige Editar.
 
-![img0](./36png)
+![img0](./36.png)
 
 7. Bajo Proveedores de Identidad, elige Seleccionar proveedores de identidad y selecciona Google.
 
-![img0](./37png)
+![img0](./37.png)
 
 8. En los alcances de OpenID Connect, asegúrate de que Correo electrónico, OpenID y Perfil estén seleccionados. Luego elige Guardar cambios.
 
-![img0](./38png)
+![img0](./38.png)
 
 ## Iniciar sesión con Google
 ### Variables de entorno
@@ -191,13 +191,13 @@ Dominio de Cognito: Ubicado en la pestaña de integración de aplicaciones de tu
 ID del cliente de la aplicación: Al final de la página de integración de aplicaciones, elige tu cliente de aplicación de la lista de clientes. Ubica tu ID de cliente en la sección de información del cliente de la aplicación.
 Secreto del cliente de la aplicación: Si has encontrado tu ID de cliente, el secreto del cliente debería estar justo debajo de este.
 
-![img0](./39png)
+![img0](./39.png)
 
 
 ### Crear NextJS
 Este paso es opcional pero si usted no tiene una app NextJS creada, puede crearla con esta configuracion.
 
-![img0](./40png)
+![img0](./40.png)
 
 Tu archivo .env.local en la raiz del proyecto NextJS deberia verse asi:
 
@@ -214,7 +214,7 @@ El endpoint GET /oauth2/authorize es un punto de redirección que redirigirá al
 
 Debemos crear nuestra solicitud GET al endpoint /oauth2/authorize con los parámetros:  response_type, client_id, redirect_uri, identity_provider, and scope.
 
-![img0](./42png)
+![img0](./42.png)
 
 ```ts
 // app/api/auth/google-sign-in/route.ts
@@ -244,7 +244,7 @@ export async function GET(request: NextRequest) {
 
 Para llamar a la ruta que creamos de nuestra API desde el cliente, podemos realizar una solicitud GET usando la etiqueta de formulario. Su código de interfaz podría ser tan simple como este:
 
-![img0](./43png)
+![img0](./43.png)
 
 ```tsx
 
@@ -278,7 +278,7 @@ export default function Page() {
 
 Después de que su usuario inicie sesión con la cuenta elegida, nuestra función callback recibirá un código de autorización en los parámetros de búsqueda que utilizaremos para el siguiente paso: realizar una solicitud POST al punto final /oauth2/token.
 
-![img0](./45png)
+![img0](./45.png)
 
 ```ts
 import { NextResponse, type NextRequest } from 'next/server'
@@ -343,4 +343,4 @@ export async function GET(request: NextRequest) {
 
 Una solicitud exitosa al endpoint del token, generara tokens de identificación, acceso y actualización. La presencia del token de acceso indica el estado de inicio de sesión de su usuario. También debería ser redirigido a su página de inicio y para verificar más a fondo si su solicitud fue exitosa, vaya a las herramientas de desarrollo de su navegador y seleccione la pestaña de almacenamiento para verificar sus cookies. Verá sus cookies access_token, id_token y refresco_token con sus valores correspondientes.
 
-![img0](./46png)
+![img0](./46.png)
