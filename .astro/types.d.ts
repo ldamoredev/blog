@@ -227,6 +227,13 @@ declare module 'astro:content' {
   collection: "post";
   data: InferEntrySchema<"post">
 } & { render(): Render[".mdx"] };
+"ci-with-dagger/index.mdx": {
+	id: "ci-with-dagger/index.mdx";
+  slug: "ci-with-dagger";
+  body: string;
+  collection: "post";
+  data: InferEntrySchema<"post">
+} & { render(): Render[".mdx"] };
 "deploy-docker-compose-traefik-aws-ec2/index.mdx": {
 	id: "deploy-docker-compose-traefik-aws-ec2/index.mdx";
   slug: "deploy-docker-compose-traefik-aws-ec2";
@@ -248,6 +255,20 @@ declare module 'astro:content' {
   collection: "post";
   data: InferEntrySchema<"post">
 } & { render(): Render[".mdx"] };
+"feature-flags/index.mdx": {
+	id: "feature-flags/index.mdx";
+  slug: "feature-flags";
+  body: string;
+  collection: "post";
+  data: InferEntrySchema<"post">
+} & { render(): Render[".mdx"] };
+"google-sign-in-with-amazon-cognito-and-nextjs/index.mdx": {
+	id: "google-sign-in-with-amazon-cognito-and-nextjs/index.mdx";
+  slug: "google-sign-in-with-amazon-cognito-and-nextjs";
+  body: string;
+  collection: "post";
+  data: InferEntrySchema<"post">
+} & { render(): Render[".mdx"] };
 "kong-api-gateway-for-development-environment/index.mdx": {
 	id: "kong-api-gateway-for-development-environment/index.mdx";
   slug: "kong-api-gateway-for-development-environment";
@@ -258,6 +279,20 @@ declare module 'astro:content' {
 "publish-npm-package/index.mdx": {
 	id: "publish-npm-package/index.mdx";
   slug: "publish-npm-package";
+  body: string;
+  collection: "post";
+  data: InferEntrySchema<"post">
+} & { render(): Render[".mdx"] };
+"react-native-modules/index.mdx": {
+	id: "react-native-modules/index.mdx";
+  slug: "react-native-modules";
+  body: string;
+  collection: "post";
+  data: InferEntrySchema<"post">
+} & { render(): Render[".mdx"] };
+"restore-backup-of-postgres-container/index.mdx": {
+	id: "restore-backup-of-postgres-container/index.mdx";
+  slug: "restore-backup-of-postgres-container";
   body: string;
   collection: "post";
   data: InferEntrySchema<"post">
