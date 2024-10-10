@@ -1,30 +1,47 @@
 ---
-import PageLayout from "@/layouts/Base";
 import { Image } from "astro:assets";
-import meImg from "~/assets/me.jpg";
+import aboutImg from "@/assets/about-astro.png";
+import PageLayout from "@/layouts/Base.astro";
 
 const meta = {
-	title: "About",
-	description: "I'm a software developer",
+  description: "I'm a starter theme for Astro.build",
+  title: "About",
 };
 ---
 
-
 <PageLayout meta={meta}>
-	<div class="space-y-6">
-		<h1 class="title">Who am i?</h1>
-		<p>My name is Lautaro Damore and i am a software developer. I consider myself an autonomous person who is always looking to learn new areas and techniques. I feel involved with the software crafter movement, which emphasizes professionalism, quality and technical excellence.</p>
-		<p>At the moment I am working and learning in the company "Proyecto 404" following the agile culture (specifically Extreme Programing). With practices like pair/mob programming, continous delivery, TDD, refactoring, clean code and simple desing. It's a path that I'm just starting to walk and there is still a lot to learn.</p>
-		<p>I have more than 3 years of experience working with tools and languages such as: Kotlin, Java, JavaScript/TypeScript, NodeJS, React, React Native, Docker, Kubernetes, AWS, GitHub Actions, GitLab CI, Terraform.</p>
-		<div class="flex justify-center">
-			<Image src={meImg} width={480} alt="A cartoon cactus looking at 'Astro.build' logo"	/>
-		</div>
-		<h1 class="title">Why did i make this site?</h1>
-		<ul class="list-disc list-inside">
-			<li>To share experiences and knowledge with other people with similar problems and interests</li>
-			<li>Is a perfect tool to remember certain learned topics and motivate me to learn others</li>
-			<li>It is a good way to become known and meet new people in the world of software development</li>
-			<li>It is a good way to practice english 😂 (Im a spanish native speaker)</li>
-		</ul>
-	</div>
+  <div class="space-y-6">
+    <h1 class="title">About</h1>
+    <p>
+      Hi, I’m a starter Astro. I’m particularly great for getting you started with your own blogging
+      website.
+    </p>
+    <div class="flex justify-center">
+      <Image
+        alt="A cartoon cactus looking at the 'Astro.build' logo"
+        fetchpriority="high"
+        loading="eager"
+        src={aboutImg}
+      />
+    </div>
+    <p>Here are my some of my awesome built in features:</p>
+    <ul class="list-inside list-disc">
+      <li>I'm ultra fast as I'm a static site</li>
+      <li>I'm fully responsive</li>
+      <li>I come with a light and dark mode</li>
+      <li>I'm easy to customise and add additional content</li>
+      <li>I have Tailwind CSS styling</li>
+      <li>Shiki code syntax highlighting</li>
+      <li>Satori for auto generating OG images for blog posts</li>
+    </ul>
+    <p>
+      Clone or fork my <a
+      aria-label="github repository"
+      class="cactus-link inline-block"
+      href="https://github.com/chrismwilliams/astro-cactus"
+      rel="noreferrer"
+      target="_blank">repo</a
+    > if you like me!
+    </p>
+  </div>
 </PageLayout>
