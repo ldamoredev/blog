@@ -14,7 +14,7 @@ const socialLinks: {
 }[] = [
   {
     friendlyName: "Github",
-    link: "https://github.com/chrismwilliams/astro-cactus",
+    link: "https://github.com/ldamoredev",
     name: "mdi:github",
   },
 ];
@@ -29,7 +29,7 @@ const socialLinks: {
           <a
             class="inline-block sm:hover:text-link"
             href={link}
-            rel={`noreferrer ${isWebmention ? "me authn" : ""}`}
+            rel={`noreferrer me`}
             target="_blank"
           >
             <Icon aria-hidden="true" class="h-8 w-8" focusable="false" name={name} />

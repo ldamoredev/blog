@@ -1,4 +1,4 @@
-import { defineCollection, z } from "astro:content";
+ import { defineCollection, z } from "astro:content";
 
 function removeDupsAndLowerCase(array: string[]) {
   if (!array.length) return array;

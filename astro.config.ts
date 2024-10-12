@@ -45,7 +45,7 @@ export default defineConfig({
       // short_name: "Astro_Cactus",
       description: siteConfig.description,
       lang: siteConfig.lang,
-      icon: "public/icon.svg", // the source for generating favicon & icons
+      icon: "public/icon.png", // the source for generating favicon & icons
       icons: [
         {
           src: "icons/apple-touch-icon.png", // used in src/components/BaseHead.astro L:26
@@ -94,7 +94,7 @@ export default defineConfig({
   // https://docs.astro.build/en/guides/prefetch/
   prefetch: true,
   // ! Please remember to replace the following site property with your own domain
-  site: "https://astro-cactus.chriswilliams.dev/",
+  site: "https://blog.ldamore.com/",
   vite: {
     optimizeDeps: {
       exclude: ["@resvg/resvg-js"],
