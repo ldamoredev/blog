@@ -1,0 +1,255 @@
+---
+title: "Publish npm package"
+publishDate: "21 Aug 2023"
+description: "En este tutorial veremos como publicar un paquete a npm"
+tags: ["npm", "package"]
+---
+
+### Inicializar proyecto y agregar dependencias
+
+Lo primero es inicializar nuestro proyecto y agregar las dependencias que necesitamos. En mi caso voy a estar usando la nueva version de [yarn](https://yarnpkg.com/).
+
+Para iniciar el proyecto usaremos los siguientes comandos:
+
+```bash
+ldamore@Desktop:~ $ mkdir my-npm-package
+ldamore@Desktop:~ $ cd my-npm-package
+ldamore@Desktop/my-npm-package:~ $ yarn init
+```
+
+Y luego agregamos las dependencias que necesitamos. En mi caso voy a usar:
+
+- [builder bob](https://github.com/callstack/react-native-builder-bob): Herramienta que nos ayuda a bundlear nuestro código para distribución
+- [Typescript](https://www.typescriptlang.org/): Javascript con sintaxis de tipos.
+- [eslint](https://eslint.org/): Herramienta que nos ayuda analizar nuestro código y encontrar bugs.
+
+No es necesario que instales typescript y eslint, eso va a depender de como armes tu paquete.
+
+Agregamos las dependencias:
+
+```bash
+ldamore@Desktop/my-npm-package:~ $ yarn add --dev @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser eslint react-native-builder-bob typescript
+```
+
+### Configurar Builder bob
+
+Una vez instalada las dependencias debemos configurar la herramienta Builder bob para que buildee nuestro código para produccion. Para eso debemos hacer algunos ajustes en el package.json
+
+```
+{
+  "name": "my-npm-package",
+  "version": "0.1.o",
+  "description": "Simple package",
+  "main": "dist/commonjs/index.js", // add this line
+  "module": "dist/module/index.js", // add this line
+  "types": "dist/typescript/index.d.ts", // if you configure typescript, add this line
+  "files": [
+    "src",
+    "dist",
+    "README.md",
+    "LICENSE"
+  ], // add this lines
+  "scripts": {
+    "build": "bob build" // add this line
+  },
+  "devDependencies": {
+    "@types/node": "^20.5.0",
+    "@typescript-eslint/eslint-plugin": "^6.4.0",
+    "@typescript-eslint/parser": "^6.4.0",
+    "eslint": "^8.47.0",
+    "react-native-builder-bob": "^0.20.4",
+    "typescript": "^5.0.4"
+  },
+  "react-native-builder-bob": {
+    "source": "src",
+    "output": "dist",
+    "targets": [
+      "commonjs",
+      "module",
+      "typescript"
+    ]
+  }, // add this lines
+  "engines": {
+    "node": ">= 18.0.0"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  }, // add this lines
+  "packageManager": "yarn@3.6.1"
+}
+```
+
+Vamos paso por paso para explicar cada línea:
+
+- **“main”:** Indica el punto de entrada de nuestro paquete. Se suele poner el path al código buildeado con el sistema de modulos **commonjs (module.exports/require)**. Builder bob nos creará este código.
+- **“module”:** Indica el punto de entrada de nuestro paquete, pero con el sistema de **module (exports/imports)**.  Builder bob nos creará este código.
+- **“types”:** Opcional. Si nuestro código está en typescript indica el path a los tipos de nuestro paquetes. Builder bob nos proporcionará estos tipos.
+- **“files”:** Indica que archivos incluiremos en el paquete. La carpeta dist (creada una vez que buildeemos nuestro código con Builder bob) es obligatoria. Luego podremos añadir opcionalmente src (recomendable para que quienes instalen el paquete tengan acceso al código fuente y no solo al código bundleado). También se pueden añadir opcionalmente README.md y LICENSE o todos los archivos que querramos (se recomienda el minimo posible asi el paquete no pesa tanto)
+- **“scripts”:** Dentro de script agregaremos el comando `“build": "bob build"` para poder luego ejecutarlo y asi bob buildeara nuestro código para distribución.
+- “**react-native-builder-bob**”: Aquí es donde configuraremos a builder bob para que buildee nuestro código. En mi caso le especifico que tome el código de la carpeta **src** y que el output sea en la carpeta **dist.** Ademas le especificamos los 3 targets posibles: **commonjs, module & typescript.** Si usted no usa typescript, no es necesario especificarlo.
+- “**publishConfig**”: Indica a que registry vamos a subir el paquete, en nuestro caso será el registry oficial de npm
+
+### Configuracion de Typescript y eslint (opcional)
+
+Este paso es para quienes tienen su proyecto en Typescript y usan eslint. A continuación mostraré la configuración que yo utilizo en el proyecto
+
+tsconfig.json:
+
+```json
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "lib": ["esnext"],
+    "module": "esnext",
+    "moduleResolution": "node",
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+    "noImplicitUseStrict": false,
+    "noImplicitAny": false,
+    "strictNullChecks": false,
+    "noStrictGenericChecks": false,
+    "noUncheckedIndexedAccess": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": false,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "target": "esnext",
+    "declaration": true,
+    "outDir": "dist",
+    "isolatedModules": true
+  },
+  "include": ["src"]
+}
+```
+
+.eslintrc.js
+
+```jsx
+module.exports = {
+  root: true,
+  extends: ['eslint:recommended'],
+  parser: '@typescript-eslint/parser',
+  plugins: ['@typescript-eslint'],
+  env: {
+    es6: true,
+    jest: true,
+  },
+  globals: {
+    module: false,
+    require: false,
+    console: true,
+    process: true
+  },
+  rules: {
+    'semi': ['error', 'never'],
+    'curly': ['error', 'multi-line'],
+    'object-curly-spacing': [ 'error', 'always' ],
+    'dot-notation': 'off',
+    '@typescript-eslint/no-shadow': 'off',
+    '@typescript-eslint/semi': ['error', 'never'],
+    '@typescript-eslint/no-unused-vars': [
+      'warn', {
+        'vars': 'all',
+        'args': 'none',
+        'ignoreRestSiblings': false,
+      }],
+  },
+  ignorePatterns: ['dist/'],
+}
+```
+
+### Codear
+
+Por último nos queda codear la funcionalidad de nuestro paquete. Ya que esto es un post que explica como subir un paquete a npm, la funcionalidad será muy básica porque no pretende hacer hincapié en eso. Es simplemente para testear la subida del paquete.
+
+Por eso el siguiente paso será crear la carpeta **src** (carpeta donde le indicamos a bob que estará nuestro código) y crear un archivo **index.ts** (o **index.js** si no utilizan typescript) con alguna funcionalidad adentro.
+
+**src/index.ts**
+
+```tsx
+export const sum = (a: number, b: number) => a + b
+```
+
+### Buildear & Publicar
+
+Lo último que nos queda es buildear y publicar nuestro paquete. Para buildear debemos correr el comando ya creado **build:**
+
+```bash
+ldamore@Desktop/my-npm-package:~ $ yarn build
+```
+
+Eso nos creará una carpeta dist con los **targets** especificados previamente:
+
+![0](./0.png)
+
+Por ultimo para publicar nuestro paquete debemos crear en la raíz de nuestro proyecto un archivo llamado **.yarnrc.yml** con el siguiente contenido:
+
+```yaml
+npmAuthToken: npm_your-npm-token
+```
+
+Este archivo indicará las credenciales de nuestra cuenta npm para poder hacer login y publicar nuestro paquete.
+
+Es requerido antes tener una cuenta en npm e ir a la sección de access token y generar un nuevo token para poder publicar.
+
+![1](./1.png)
+
+### Configurar GitHub Actions (opcional)
+
+Para poder hacer el proceso de publicación más automático podemos utilizar github actions (o cualquier otro ci) para automatizar estas tareas.
+
+Para eso crearemos las siguientes carpetas y archivo en la raíz.
+
+.github/workflows/main.yml
+
+```yaml
+name: Build & Publish
+
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'yarn'
+          registry-url: 'https://registry.npmjs.org'
+      - name: Install modules
+        run: yarn install --immutable
+      - name: Run lint
+        run: yarn lint
+
+  publish:
+    runs-on: ubuntu-latest
+    needs: test
+    if: startsWith(github.ref, 'refs/tags/release-')
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'yarn'
+          registry-url: 'https://registry.npmjs.org'
+      - name: Install modules
+        run: yarn install --immutable
+      - name: Build
+        run: yarn build
+      - name: Publish to npm
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+```
+
+Este workflow indica que antes un push corrobora que el código esté bien y ante un tag con la regex release- se hace una publicación. Es importante configurar en los secretos del repo el **NPM_TOKEN**
